@@ -7,6 +7,34 @@ Data has become one of the most valuable asset a business can have. With data en
 ## Introducing Amazon Redshift
 In the past business owners only had two options with big data volumens, choosing between slow querys performace or paying for expensive upgrades. **Amazon Redshift** came to change how enterprises think about data warehous. they became low cost systems without compromising performance.This service offers a fast, scalable and fully managage data warehouse solution. It was launch in February 2013 and became one of the fastest growing AWS service.
 ## Modern Analytics and Data Warehousing Architecture
+**dataware house** are optimized for batched write operations and reading high volumnes of data
+**OLTP database** are optimized for continous write operations and high volumnes of small read operations
+### Analytics Architecture
+Analytic pipelines are designed to handle large amounts of data from sources like databe, aplications and devices.
+
+Analytics pipeline has the following stages:
+1. Collect data
+2. Store the data
+3. Process the data
+4. Analyze and visualize the data. 
+
+##Data Warehouse Technology Options
+### Row-Oriented Database
+Row-Oriented Database Store rows in a physical block.These type of Database are better for transactional processing than for analytics. They are limited by de resources available on a machine
+
+Developers use the following techniques for better performance
+- Building materialized views
+- Creating pre-aggregated rollup tables
+- Building indexes on every possible predicate combination
+- Implementing data partitioning to leverage partition pruning by query optimizer
+- Performing index-based joins
+
+### Column-Oriented Database
+Column-Oriented Database organize each column in its own set of physical blocks. this type of database is better for warehouse because they are efficient for read-only queries.
+
+
+
+## Amazon Redshift Deep Dive
 ## Operations
 ### Ideal Usage Patterns
 Amazon Redshift is a good service for OLAP. Business use this service for:
