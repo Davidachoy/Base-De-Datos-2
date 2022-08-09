@@ -7,5 +7,19 @@ Data has become one of the most valuable asset a business can have. With data en
 ## Introducing Amazon Redshift
 In the past business owners only had two options with big data volumens, choosing between slow querys performace or paying for expensive upgrades. **Amazon Redshift** came to change how enterprises think about data warehous. they became low cost systems without compromising performance.This service offers a fast, scalable and fully managage data warehouse solution. It was launch in February 2013 and became one of the fastest growing AWS service.
 ## Modern Analytics and Data Warehousing Architecture
+## Operations
+### Ideal Usage Patterns
+Amazon Redshift is a good service for OLAP. Business use this service for:
+- Analyze global sales data for multiple products
+- Store historical stock trade data
+- Analyze ad impressions and clicks
+- Aggregate gaming data
+- Analyze social trends
+
+### Anti-Patterns
+Amazon Redshift is bad the following usage patterns
+- OLTP
+- Unstructured data
+- BLOB data
 
 
