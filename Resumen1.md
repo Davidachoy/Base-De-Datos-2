@@ -18,7 +18,7 @@ Analytics pipeline has the following stages:
 3. Process the data
 4. Analyze and visualize the data. 
 
-##Data Warehouse Technology Options
+## Data Warehouse Technology Options
 ### Row-Oriented Database
 Row-Oriented Database Store rows in a physical block.These type of Database are better for transactional processing than for analytics. They are limited by de resources available on a machine
 
@@ -35,6 +35,15 @@ Column-Oriented Database organize each column in its own set of physical blocks.
 
 
 ## Amazon Redshift Deep Dive
+### Performance
+#### High performing hardware
+Amazon Redshift offers a high speed performace workload that require large amount of compute capacity.
+#### AQUA
+Is a distributed and hardware-accelerated cache that enables Amazon Redshift to run up to ten times faster than any other cloud data warehouse.
+#### Materialized views
+Amazon Redshift materialized views enable to achive faster analytical workloads such as dashboarding, quearies and ELT data processing jobs
+### Durability and Availability 
+Amazon detects and replace any failed node in the data cluster.
 ## Operations
 ### Ideal Usage Patterns
 Amazon Redshift is a good service for OLAP. Business use this service for:
