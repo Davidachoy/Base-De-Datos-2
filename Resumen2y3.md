@@ -51,7 +51,6 @@ The first level is a file stored in Chubby and it contains the root tablet, the 
 One tablet server is assigned to each tablet at a time. The master server keep traks of the tablet servers.
 Bigtable uses Chubby to keep track of tablet servers
 **Falta**
-### Tablet Serving
 ### Compactions
 ## Refinements
 Implementing the components describe in Implementation requires a number of refinements for ensuring high performance, availability, and reliability.This section describes with more details these refinements.
@@ -90,5 +89,5 @@ Personalized Search is an service that records user queries and clicks across a 
 Personalized Search stores each user’s data in Bigtable.
 
 ## Conclusions
-
+Bigtable has been in the market since 2005, and it has shown that it is very usefull with a lot of google aplication. Knowing how to implement and use this technology can help big companies to manage big data in a lot of forms. 
 
