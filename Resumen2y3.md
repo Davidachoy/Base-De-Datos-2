@@ -68,16 +68,27 @@ Tablet servers use two levels of caching
 2. The Block Cache (Used for reading data that is close to the data they recently read)
 
 ### Bloom filters
+A Bloom filter is a feature that filters drastically reduces the number of disk seeks required for read operations.Also, Bloom filters help that most lookups for non-existent rows or columns do not need to touch disk.
 ### Commit-log implementation
-### Speeding up tablet recovery
+Commit-log implementation adds mutations to a single commit log per tablet server, co-mingling mutations for different tablets in the same physical log file. 
 ### Exploiting immutability
+Various parts of the Bigtable are simplified  by the fact that all of the SSTables that we generate are immutable.
+The immutability of SSTables enables the users to split tablets quickly. Instead of generating a new set of
+SSTables for each child tablet.
 ## Performance Evaluation
 ## Real Applications
+On August 2006, there were 388 non-test Bigtable clusters running in various Google machine clusters, with a combined total of about 24,500 tablet servers.
 ### Google Analytics
+Google analytic is a famous application that google has. It is a service that analize traffic patterns in web sites. It gives analytics reports such as visitors per day and page views per URL per day. 
 ### Google Earth
+Google Earth is an app that provides high resolution satellite image of the world. Thi The preprocessing pipeline uses one table to store raw imagery. During preprocessing, the imagery is cleaned
+and consolidated into final serving data. This table contains approximately 70 terabytes of data and therefore is
+served from disk.
+
 ### Personalized Search
-## Lessons
-## Related Work
+Personalized Search is an service that records user queries and clicks across a variety of Google properties such as web search, images, and news. This helps users to revisit their old queries and clicks, and they can ask for personalized search results based on their historical Google patterns.
+Personalized Search stores each user’s data in Bigtable.
+
 ## Conclusions
 
 
