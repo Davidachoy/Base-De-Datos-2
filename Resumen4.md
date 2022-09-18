@@ -29,4 +29,35 @@ schema of JSON documents. Each label in a Json becomes a node of the tree. There
 
 ### Index as a Document
 
-Every part of the tree is automatic indixing.
+Every part of the tree is automatic indixing. Each update makes the tree updates the structure of the index.
+
+There are two ways of mapping a document:
+
+1. forward index mapping, which keeps a map of  (document id, path) tuples.
+2.  inverted index mapping, which keeps a map of (path, document id) tuples.
+
+
+The index tree grows as new documents get added or updated to the collection. Each node of the index tree is an index entry containing the label and position values.
+
+### DocumentDB Queries
+
+Developers can query DocumentDB collections using queries written in SQL and JavaScript. they both are translated and converted to DocumentDB Query IL. This support a list of actions like:
+
+- filters
+- projections
+- aggregates
+- sort
+- user defined functions 
+- and more
+
+The Query IL is made for taking the best from JSON and JavaScript language inside DocumentDB database engine. 
+
+The unique aspect of DocumentsDb is that they they allow one to refer to properties in JSON documents at any arbitrary depth, including wildcard paths.
+
+## LOGICAL INDEX ORGANIZATION
+
+The index is a union of all the documents and is also represented as a tree. each node of this tree has a list of documents ids corresponding to the documents containing the given label value.
+
+### Directed Paths as Terms
+A term represents a unique path in the index tree.
+
