@@ -82,4 +82,23 @@ index maintenance must be performed with the following constrains:
 - Index update performance must be a function of the arrival rate of the index-able paths
 - Index update performance must be a function of the arrival rate of the index-able paths.
 - Index update cannot assume any path locality among the incoming documents. 
-- and more
+- Each index update should incur minimal read amplification
+- Each index update should have the least possible write amplification
+
+
+### The Bw-Tree for DocumentDB
+
+The Bw-Tree uses free in memory updates and log strugtures for persistence. it uses multicore processors with multi-level memory/cache and flash memory based SSDs with fast reads.
+
+
+## INSIGHTS FROM THE PRODUCTION WORKLOADS
+### Document Frequency Distribution
+
+document frequency distribution for the unique terms universally follow Zipf’s Law
+
+### Query Performance
+The query performace is define by the number of false positives in posting for a given term lookup.The highest value of query precision is 1.
+
+### Blind Incremental Updates
+Using highly performant index updates with memory and IOPS busget is the key for incremental update access.
+
