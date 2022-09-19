@@ -59,5 +59,27 @@ The unique aspect of DocumentsDb is that they they allow one to refer to propert
 The index is a union of all the documents and is also represented as a tree. each node of this tree has a list of documents ids corresponding to the documents containing the given label value.
 
 ### Directed Paths as Terms
-A term represents a unique path in the index tree.
+A term represents a unique path in the index tree.For specifying the path information we should consider the direction of the edges connecting the nodes of the document tree.
 
+### Bitmaps as Posting List
+A postings list captures the document ids of all the documents which contain the given term. this size is measured with the document frequency - the number of documents in the collection. An example, a document id space of 8 bytes allos up to 2**64 documents in a collection
+
+**Partitioning a Postings List** This means that each insertion of a document to DocumentDB is assigned a monotonically increasing document Id.
+
+** Dynamic Encoding of Posting Entries** this is a single partition, each document need a short word of 14 bits.
+
+### Customizing the Index
+Developers can customize the indexing policy and can change de following aspects:
+
+- Including/Excluding documents and paths to/from index
+- Configuring Various Index Types
+- Configuring Index Update Modes
+
+## PHYSICAL INDEX ORGANIZATION
+### The “Write” Data Structure
+index maintenance must be performed with the following constrains:
+
+- Index update performance must be a function of the arrival rate of the index-able paths
+- Index update performance must be a function of the arrival rate of the index-able paths.
+- Index update cannot assume any path locality among the incoming documents. 
+- and more
