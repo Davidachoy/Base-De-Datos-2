@@ -1,0 +1,13 @@
+apiVersion: v2
+name: databases
+type: application
+version: 0.1.0
+appVersion: "1.16.0"
+description: Bases de Datos del proyecto
+
+
+dependencies:
+  - name: mariadb
+    version: "11.3.1"
+    repository: https://charts.bitnami.com/bitnami
+    condition: enableMariaDB
