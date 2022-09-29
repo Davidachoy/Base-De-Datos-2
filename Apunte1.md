@@ -1,80 +1,60 @@
-# Apuntes semana 8 
+# Apuntes semana 9 
 
 ---
 
-Fecha: 13/09/22
+Fecha: 22/09/22
 Autor: David Achoy Yakimova
 
 ---
+### Tips para la tarea 
 
-## Preguntas de la primera tarea
+Un deployment siempre garantiza que hayan pods. 
 
-En Elasticsearch existen diferentes roles como :
-- Master
-- Data
-- Ingest
+Los nombres que se utilizan en los helmcharts deberian ser basados en los recursos que se van a utilizar.
 
-**Nodeset** sirve para darle una configuracion de un conjunto de maquinas que funcionan en el cluster. Al cambiar el nodeset hay que levantar los recursos. 
+Algunos charts generan bugs donde en storage se guardan volumenes a la hora de desinstalarlos.
 
-El **Heap** sirve para configurar los recursos de la memoria. Siempre suelen tener el 50% de la memoria y el otro 50% se queda en el **Operating system**.
+--- 
 
-**Lucene**: Se encarga de realizar los indices.
+### Performance
 
-Para configurar los recursos hay que hacerlo directamente en la configuracion del pod.
+**Atomicity** : Garantiza que un conjunto de sentencias son ejecutadas de forma atomica
 
-Resources:
+**Consistency** : Garantiza que el cambio se haga sin importar la circunstancia para tener consistencia, PAra tener consistencia se necesita atomisidad. y en caso de errorres se hace un rollback y vuelve al estado anterior.
 
-&nbsp;&nbsp;&nbsp;&nbsp;Limit:
+Aqui sale un termino que seria el **Lock** en el cual existe el read y write.
 
-&nbsp;&nbsp;&nbsp;&nbsp;Request:
+El lock de read es compatible con otro read, ya que se puede leer sin sufrir consistencia, pero no se puede hacer un Read y Write, ya que se pueden cambiar los datos en la lectura.
 
----
+El lock de write no se le puede leer ni escribir, ya que no cumpliria con consistencia
 
-## Gatlings
+**Rollback en cascada**: Devuelve todas las transacciones
 
-**Gatlings** es una herramienta para hacer loadTesting. Para utilizar Gatlinks se puede utilizar **Flask**
+**Isolation** : Implica que una transaccion corra sola.
 
-El siguiente Link es el de la pagina oficial de Gatlings: [gatling.io](https://gatling.io/)
+**Durability** : Garantiza que una transaccion va a durar para siempre.
 
----
+**Multiversioning**: Dos versiones de datos, la consistencia y la version calculada por la transaccion
 
-La facilidad de los JSON es que son autodescriptivos y que todos los programadores lo conocen.
+**DeathLock**: Cuando dos entidades usan el mismo sistema compartido al mismo tiempo.
 
-**Protocol Buffer**: es un lenguaje Binario de google para el intercambio de datos
+Existe dos tipos del phase lockin, es un algoritmo para los locks.
+- Expanding: Pedir locks sin liberar
+- Shrinking: Libera locks sin pedir mas
 
-**Shard key**: son claves indexadas para partir las sharded collections 
+**Conservado**: Obtener todos los lock antes de que inicie la operacion (El rendimiento cae)
 
-Pagina oficial de [MongoDB](https://www.mongodb.com/)
+**Strict two phase**: Los locks de tipo escritura se liberan hasta que termine la transaccion. (Se evita el rollback de cascada)
 
-### Como se compara SQL con NOSQL
+**Strong strict two phase**: Se liberan los locks de escritura y lectura hasta que la transaccion termine (Atrasa todas las transaccion y tiempos de respuesta bajos)
 
-- el SELECT desaparece de las base de datos NOSQL
-
-- Una base de datos SQL asegura una transaccion de datos
-- Con una base de datos NOSQL se renuncia a consistencia y aumenta el rendimiento.
-
-### Caracteristicas de MONGODB
-
-- Mongo tiene un set de indices limitados
-- Mongo tiene Replicaset y esto funciona como un cluster donde van a existir muchos servidores de Mongo.
-- Los shards de Mongo se dividen en Chunks y estos tienen limites de Shark keys
-- Mongo crea un LoadBalancer, este hace que haya una distribucion equitativa de los chunks en los shards. Asegura que todos los shards respondan en paralelo.(Crea Overhead)
-- Segun ciertas zonas geograficas exiten leyes sobre el manejo de datos privados de las personas. Mongo crea zonas geograficas y asigna servidores. A estos servidores se les asigan shards. Cada shard tiene su informacion por zona. Esto garantiza servers cerca de los clientes.
-- Mongo Soporta hashed Sharding, Ranged Sharding y Zoned Sharding.
-
-**hashed Sharding**: Se le aplica una formula y el #numero distribuye los datos.
-
-**Ranged Sharding**: De X punto a Y punto se dividen los datos
-
-**Zoned Sharding.**: se le distrubuyen a los usuarios que estan cerca y que cumpla con los requerimientos
-
-el siguiente JSON sirve para conocer el nivel de consistencia que va a tener la base de datos
-{W:value, J: value: W:Timeout:value}
-
-**W** = (valor numerico) = Numero de servers a los que debe de llegar el update
-
-**J** = (valor Booleano) = saber si utiliza el disco
-
-**W:Timeout** = (valor numerico) = Cuanto tiempo tiene que pasar pasa saber si hay concistencia
+**Two phase commit protocol**: 
+- Commit Request: Todos tienen que tener exito o sino no funciona.
+- Commit phase: En caso de failover hace rollback.
 
 
+Commit request tiene dos logs redo y undo
+
+**Redo**: Operaciones que se tienen que ejecutar para tener consistencia
+
+**Undo**: Operacion para tener el rollback
