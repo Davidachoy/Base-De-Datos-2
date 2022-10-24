@@ -32,3 +32,50 @@ Spanner’s transactions use a replicated write-ahead redo log, and the Paxos co
 Spanners distributed query processor is capable of executing code in parallel on multiple machines hosting the data to serve both online and long running queries.
 
 ## Distributed query compilation
+The Spanner SQL query compiler builds a relational algebra operator tree and optimize it using equivalent rewrites.
+
+
+**Distributed Union** t is used to ship a subquery to each shard of the underlying persistent or temporary data, and to concatenate the results.
+
+##  Distributed Execution
+
+Distributed Union minimizes latency by using the Spanner coprocessor framework to route a subquery request addressed to a shard to one of the nearest replicas that can serve the request.   
+
+## Distributed joins
+
+## Query distribution APIs
+
+# QUERY RANGE EXTRACTION
+
+## Problem statement
+
+## Compile-time rewriting
+
+## Filter tree
+
+# QUERY RESTARTS
+
+## Usage scenarios and benefits
+
+## Contract and requirements
+
+#  COMMON SQL DIALECT
+
+# BLOCKWISE-COLUMNAR STORAGE
+
+# CONCLUSIONS 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
