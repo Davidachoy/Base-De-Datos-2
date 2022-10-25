@@ -62,18 +62,40 @@ Query range extraction refers to the process of analyzing a query and determinin
 ## Compile-time rewriting
 Our implementation of range extraction in Spanner relies on two main techniques: At compile time, we normalize and rewrite a filtered scan expression into a tree of correlated self-joins that extract the ranges for successive key columns. . At runtime, we use a special data structure called a filter tree for both computing the ranges via bottom-up interval arithmetic and for efficient evaluation of postfiltering conditions.
 ## Filter tree
-
+The filter tree is a runtime data structure we developed that is simultaneously used for extracting the key ranges via bottom-up intersection / union of intervals, and for post-filtering the rows emitted by the correlated self-joins.
 # QUERY RESTARTS
-
+Spanner automatically compensates for failures, resharding, and binary rollouts, affecting request latencies in a minimal way. 
 ## Usage scenarios and benefits
+**Hiding transient failures**. Spanner fully hides transient failures during query execution. This is unlike most other distributed query processors that hide some transient failures but not necessarily all. This means that a snapshot transaction will never return an error on which the client needs to retry.
+
+
+**Simpler programming model: no retry loops** Spanner users are encouraged to set realistic request deadlines and do not need to write retry loops around snapshot transactions and standalone read-only queries.
+
+
+**Streaming pagination through query results** Spanner enables efficient use of long-running queries in-stead of paging queries. Client code may stop consuming query results for prolonged periods of time (respecting the request deadline) without hogging server resources
+
+
+**Improved tail latency for online requests** Spanner’s ability to hide transient failures and to redo minimal amount of work when restarting after a failure helps decrease tail latency for online requests. 
+
+**Forward progress for long-running queries**. For long-running queries where the total running time of the query is comparable to mean time to failure it is important to have execution environment that ensures forward progress in case of transient failures.
+
+**Recurrent rolling upgrades** f Spanner development and the ability to deploy bug fixes quickly. Support for queryrestarts complements other resumable operations like schema upgrades and online index building, and allows the Spanner team to deploy new server versions regularly, without significantly affecting request latency and system load.
+
+
+**Simpler Spanner internal error handling** . As Spanner uses restartable RPCs not only for client-server calls but also for internalserver-server calls, it simplified the architecture in regards to failure handling. Whenever a server cannot execute a request, whether it is a server-wide reason such as memory or CPU overuse, or related to a problematic shard or a dependent service failure.
 
 ## Contract and requirements
+To support restarts Spanner extended its RPC mechanism with an additional parameter, a restart token. Restart tokens accompany all query results, sent in batches, one restart token per batch.
 
+**Dynamic resharding**. Spanner uses query restarts to continue execution when a server loses ownership of a shard or boundaries of
+a shard change.
+
+**Non-determinism**. Many opportunities for improving query performance in a distributed environment present sources of nondeterministic execution, which causes result rows to be returned in some non-repeatable order.
 #  COMMON SQL DIALECT
-
+Spanner’s SQL engine shares a common SQL dialect, called “Standard SQL”, 
 # BLOCKWISE-COLUMNAR STORAGE
-
-# CONCLUSIONS 
+Spanner originally used significant parts of the Bigtable code
+base, in particular the on-disk data format and block cache. This was a good decision at the time because it allowed effort and innovation to be focused on distribution, replication, and scaling. The SSTable (sorted string table) data format inherited from Bigtable is optimized for schemaless NoSQL data consisting primarily of large strings. 
 
 
 
